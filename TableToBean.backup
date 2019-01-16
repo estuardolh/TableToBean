@@ -8,30 +8,21 @@ class Field:
     self.name = name
     self.type = type
 
-  def getGetter(self):
-    return 'public String get'+self.name+'(){ return this.'+self.name+'; }'
-
 class Table:
-  field_list=[]
+  fields=[]
   name=''
 
   def __init__(self, name):
     self.name = name
 
-  def addField(self, field):
-    self.field_list.append(field)
-
   def setFields(self, field_list):
     fields = field_list
 
   def fieldsToMethods(self):
-    res = ''
-    for method in self.field_list:
-      res += '\n'+method.getGetter()
-    return res
+    return '  public void...'
 
   def toClass(self):
-    return "public class "+self.name+"{\n"+self.fieldsToMethods()+"\n}\n"
+    return "public class "+self.name+"{\n"+self.fieldsToMethods()+"\n}"
 
 
 
@@ -65,15 +56,21 @@ input_file_path=sys.argv[1]
 
 input_file = open(input_file_path, "r")
 
+STATE_INITIAL = -1
+STATE_OPEN_CLASS = 0
+STATE_ADD_METHODS_TO_CLASS = 1
+STATE_CLOSE_CLASS = 2
 
-current_table_name = ''
+current_state = STATE_OPEN_CLASS
+
+previous_table_name = ''
 first_class = True
 
+current_file_text = ''
 line_count = 1
 
 table_list = []
-
-a_table = Table('')
+field_list = []
 
 for line in input_file:
   if( len(line.strip()) < INPUT_NUMBER_OF_COLUMNS ):
@@ -85,23 +82,40 @@ for line in input_file:
     field_name = csv_columns[COLUMN_INDEX_FIELD_NAME]
     field_type = csv_columns[COLUMN_INDEX_FIELD_TYPE]
 
-    if(current_table_name != table_name):
-      if(not first_class):
-        table_list.append(a_table)
-      a_table = Table(table_name)
-
-    a_table.addField(Field(field_name, field_type))
-
     if(first_class):
-      current_table_name = table_name
+      previous_table_name = table_name
       first_class = False
 
-    table_list.append(a_table)
-    a_table = Table('')
+    if(previous_table_name != table_name):
+      current_state = STATE_CLOSE_CLASS
+
+    if(current_state == STATE_CLOSE_CLASS):
+      a_table = Table(table_name)
+      a_table.setFields(field_list)
+
+      print a_table.toClass()
+
+      table_list.append(a_table)
+
+      field_list = []
+
+      current_file_text += '\n'+getClassEnd()
+      previous_table_name = table_name
+      current_state = STATE_OPEN_CLASS
+
+    if(current_state == STATE_OPEN_CLASS):
+      current_file_text += '\n\n'+getClassBegin(table_name)
+      current_state = STATE_ADD_METHODS_TO_CLASS
+
+    if(current_state == STATE_ADD_METHODS_TO_CLASS):
+      current_file_text += '\n'+getMethod(field_name, field_type)
+      field_list.append(Field(field_name, field_type))
 
   line_count += 1
+current_file_text += '\n'+getClassEnd()
 
+#print current_file_text
 print "Tables collected: "+str(len(table_list))
 
-for tab in table_list:
-  print tab.toClass()
+#for tab in table_list:
+  #print tab.toClass()
