@@ -1,57 +1,52 @@
 import sys
 
-class Field:
-  name=''
-  type=''
+from Table import Table
+from Field import Field
 
-  def __init__(self, name, type):
-    self.name = name
-    self.type = type
+def removeSingleQuoteMark(text):
+  return text.replace("'","")
 
-  def getGetter(self):
-    return 'public String get'+self.name+'(){ return this.'+self.name+'; }'
-
-class Table:
-  field_list=[]
-  name=''
-
-  def __init__(self, name):
-    self.name = name
-
-  def addField(self, field):
-    self.field_list.append(field)
-
-  def setFields(self, field_list):
-    fields = field_list
-
-  def fieldsToMethods(self):
-    res = ''
-    for method in self.field_list:
-      res += '\n'+method.getGetter()
-    return res
-
-  def toClass(self):
-    return "public class "+self.name+"{\n"+self.fieldsToMethods()+"\n}\n"
-
-
-
-def getClassBegin(class_name):
-  return "public class "+class_name+"{"
-
-def getMethod(field_name, field_type):
-  field_name_camel_case='c'+field_name+'c'
-  if(field_type=="'VARCHAR2'"):
-    return '  public String get'+field_name_camel_case+'(){\n    return this.'+field_name+';\n  }'
-  elif(field_type=="'NUMBER'"):
-    return '  public long get'+field_name_camel_case+'(){\n    return this.'+field_name+';\n  }'
-  return ''
-
-def getClassEnd():
-  return "}"
-
-debug = True
-
-INPUT_NUMBER_OF_COLUMNS = 2
+def getJavaTypeByOracleFieldType(oracle_field_type):
+  res = ''
+  if(oracle_field_type == "VARCHAR2"):
+    res = 'String'
+  elif(oracle_field_type == "NUMBER"):
+    res = "long"
+  else:
+    res = "String"
+  return res
+  
+def getCamelCase(text, first_char_uppered = False):
+  res = ''
+  
+  STATE_PASS = 0
+  STATE_UPPER = 2
+  
+  state = STATE_PASS
+  
+  first_char_uppered_done = False
+  
+  for char in text:    
+    if(state == STATE_PASS):
+      if(char == '_' or
+          char == '-' or
+          char == ' '):
+        # ignore
+        state = STATE_UPPER
+      else:
+        if(first_char_uppered == True and first_char_uppered_done == False):
+          res += char.upper()
+          first_char_uppered_done = True
+        else:
+          res += char.lower()
+          
+    elif(state == STATE_UPPER):
+      res += char.upper()
+      state = STATE_PASS
+      
+  return res
+  
+INPUT_NUMBER_OF_COLUMNS = 3
 
 COLUMN_INDEX_TABLE_NAME = 0
 COLUMN_INDEX_FIELD_NAME = 1
@@ -62,17 +57,13 @@ if(len(sys.argv) == 1):
   exit(0)
 
 input_file_path=sys.argv[1]
-
 input_file = open(input_file_path, "r")
-
 
 current_table_name = ''
 first_class = True
-
 line_count = 1
 
 table_list = []
-
 a_table = Table('')
 
 for line in input_file:
@@ -81,25 +72,24 @@ for line in input_file:
   else:
     csv_columns = line.strip().split(",")
 
-    table_name = csv_columns[COLUMN_INDEX_TABLE_NAME]
-    field_name = csv_columns[COLUMN_INDEX_FIELD_NAME]
-    field_type = csv_columns[COLUMN_INDEX_FIELD_TYPE]
-
-    if(current_table_name != table_name):
-      if(not first_class):
-        table_list.append(a_table)
-      a_table = Table(table_name)
-
-    a_table.addField(Field(field_name, field_type))
-
+    table_name = getCamelCase(removeSingleQuoteMark(csv_columns[COLUMN_INDEX_TABLE_NAME]), True)
+    field_name = getCamelCase(removeSingleQuoteMark(csv_columns[COLUMN_INDEX_FIELD_NAME]), True)
+    field_type = getJavaTypeByOracleFieldType(removeSingleQuoteMark(csv_columns[COLUMN_INDEX_FIELD_TYPE]))
+    
     if(first_class):
-      current_table_name = table_name
+      a_table = Table(table_name)
       first_class = False
-
-    table_list.append(a_table)
-    a_table = Table('')
-
+      current_table_name = table_name
+    
+    if(current_table_name != table_name):
+      table_list.append(a_table)
+      a_table = Table(table_name)
+      
+      current_table_name = table_name
+    
+    a_table.addField(Field(field_name, field_type))
   line_count += 1
+table_list.append(a_table)
 
 print "Tables collected: "+str(len(table_list))
 
