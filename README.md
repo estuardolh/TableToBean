@@ -7,21 +7,21 @@ Connects to an Oracle database and generate Java Beans.
 python TableToBean.py <CSV input file>
 ```
 
-Where CSV input file is output of the next query:
+CSV input file content could be generated as follow:
 
 ```
 select ''''||table_name||''','''||column_name||''','''||data_type||''''
 from all_tab_columns
-order by column_id;
+order by table_name, column_id;
 ```
 
 Notes:
+  - Fields order is: Table name, Column name, Oracle Data type.
+  - Sorted by Table name is mandatory.
+  - It hasn't column's header.
+  - Values must be quoted by single quote mark.
 
-  - ```Order By column_id``` is mandatory.
-
-  - It hasn't column's header
-
-###Example
+### Example
 
 CSV input file
 ```
@@ -29,7 +29,7 @@ CSV input file
 'CAT','AGE','NUMBER'
 ```
 
-###Requirements for Ubuntu
+### Requirements for Ubuntu
 
 From pip:
   
