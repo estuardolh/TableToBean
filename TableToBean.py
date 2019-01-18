@@ -9,11 +9,11 @@ def removeSingleQuoteMark(text):
 def getJavaTypeByOracleFieldType(oracle_field_type):
   res = ''
   if(oracle_field_type == "VARCHAR2"):
-    res = 'String'
+    res = Field.TYPE_JAVA_STRING
   elif(oracle_field_type == "NUMBER"):
-    res = "long"
+    res = Field.TYPE_JAVA_LONG
   else:
-    res = "String"
+    res = Field.TYPE_JAVA_STRING
   return res
   
 def getCamelCase(text, first_char_uppered = False):

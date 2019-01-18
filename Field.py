@@ -1,4 +1,7 @@
 class Field:
+  TYPE_JAVA_STRING = 'String'
+  TYPE_JAVA_LONG = 'long'
+
   name=''
   type=''
 
@@ -7,4 +10,18 @@ class Field:
     self.type = type
 
   def getGetter(self):
-    return 'public String get'+self.name+'(){\n    return this.'+self.name+';\n  }'
+    return 'public '+self.type+' get'+self.name+'(){\n    return this.'+self.name+';\n  }'
+
+  def getSetter(self):
+    return 'public void set'+self.name+'('+self.type+' '+self.name+'){\n    this.'+self.name+' = '+self.name+';\n  }'
+
+  def getInitValueByJavaType(self, type):
+    res = ''
+    if(type == Field.TYPE_JAVA_STRING):
+      res = '""'
+    elif (type == Field.TYPE_JAVA_LONG):
+      res = '0'
+    return res
+
+  def getDeclare(self):
+    return 'private '+self.type+' '+self.name+' = '+self.getInitValueByJavaType(self.type)+';'
