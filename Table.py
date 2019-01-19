@@ -25,9 +25,15 @@ class Table:
     res += '  public '+self.name+'('
     field_count = 1
     field_list_lenght = len(self.field_list)
+    constructor_parameters = ''
+    constructor_inits = ''
     for field in self.field_list:
-      res += field.type+' '+field.name+(',' if field_list_lenght > 1 and field_count < field_list_lenght else '){\n')
+      constructor_parameters += field.type+' '+field.name+(', ' if field_list_lenght > 1 and field_count < field_list_lenght else '){')
+      constructor_inits += '    this.'+field.name+' = '+field.name+';'+('\n' if field_list_lenght > 1 and field_count < field_list_lenght else '')
       field_count += 1
+
+    res += constructor_parameters
+    res += '\n'+constructor_inits
     res += '\n  }'
     return res
 
@@ -35,8 +41,8 @@ class Table:
     res = ''
     first_method = True
     for field in self.field_list:
-      res += ('  ' if first_method == True else '\n  ')+field.getGetter()
-      res += '\n  '+field.getSetter()
+      res += ('  ' if first_method == True else '\n\n  ')+field.getGetter()
+      res += '\n\n  '+field.getSetter()
 
       first_method = False
     return res

@@ -93,5 +93,5 @@ table_list.append(a_table)
 
 print "Tables collected: "+str(len(table_list))
 
-for tab in table_list:
-  print tab.toClass()
+for table in table_list:
+  print table.toClass()
