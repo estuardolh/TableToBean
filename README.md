@@ -1,11 +1,13 @@
 # TableToBean
-Connects to an Oracle database and generate Java Beans.
+Reads database tables CSV export and generate Java Beans.
 
 **USAGE**:
 
 ```
 python TableToBean.py <CSV input file>
 ```
+
+```config.ini``` contains configuration variables.
 
 CSV input file content could be generated as follow:
 
@@ -31,15 +33,13 @@ CSV input file
 
 ### Requirements for Ubuntu
 
-From pip:
+on terminal execute:
+```
+  pip install cx_Oracle
+  pip install configparser
   
-  - cx_Oracle
+  sudo apt-get install libaio1
+  sudo apt-get install libaio-dev
+```
 
-From apt:
-  
-  - libaio1
-  - libaio-dev
-  
-From Oracle:
-  
-  - https://oracle.github.io/odpi/doc/installation.html#linux
+And then follow [this instructions] from Oracle docs.(https://oracle.github.io/odpi/doc/installation.html#linux)
