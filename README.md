@@ -25,15 +25,49 @@ Notes:
 
 ### Example
 
-CSV input file
+Input file:
 ```
 'CAT','ID_CAT','VARCHAR2'
 'CAT','AGE','NUMBER'
 ```
 
+Execution:
+```
+python TableToBean.py input.csv
+```
+
+Output:
+```
+public class Cat {
+  private String id_cat = "";
+  private long age = 0;
+
+  public Cat(String id_cat, long age){
+    this.id_cat = id_cat;
+    this.age = age;
+  }
+
+  public String getIdCat(){
+    return this.id_cat;
+  }
+
+  public void setIdCat(String id_cat){
+    this.id_cat = id_cat;
+  }
+
+  public long getAge(){
+    return this.age;
+  }
+
+  public void setAge(long age){
+    this.age = age;
+  }
+}
+```
+
 ### Requirements for Ubuntu
 
-on terminal execute:
+On terminal execute:
 ```
   pip install cx_Oracle
   pip install configparser
@@ -42,4 +76,4 @@ on terminal execute:
   sudo apt-get install libaio-dev
 ```
 
-And then follow [this instructions] from Oracle docs.(https://oracle.github.io/odpi/doc/installation.html#linux)
+And then follow [this instructions](https://oracle.github.io/odpi/doc/installation.html#linux) from Oracle docs.
