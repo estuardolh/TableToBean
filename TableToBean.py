@@ -15,14 +15,6 @@ def removeSingleQuoteMark(text):
   return text.replace("'","")
 
 def getJavaTypeByOracleFieldType(oracle_field_type):
-  #res = ''
-  #if(oracle_field_type == "VARCHAR2"):
-  #  res = Field.TYPE_JAVA_STRING
-  #elif(oracle_field_type == "NUMBER"):
-  #  res = Field.TYPE_JAVA_LONG
-  #else:
-  #  res = Field.TYPE_JAVA_STRING
-  #return res
   return database_types[oracle_field_type]
 
 INPUT_NUMBER_OF_COLUMNS = 3
@@ -81,5 +73,13 @@ table_list.append(a_table)
 
 print "Tables collected: "+str(len(table_list))
 
+initialize_global_variables = configuration['main']['global_variables_inicialization']
+
+print initialize_global_variables
+
 for table in table_list:
-  print table.toClass()
+  generated_file_path = "./output/"+table.getTableName()+".java"
+  file = open(generated_file_path, "w+")
+  file.write(table.toClass(True if initialize_global_variables == 'True' else False))
+  file.close()
+  print "  - file "+generated_file_path

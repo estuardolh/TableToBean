@@ -25,5 +25,5 @@ class Field:
       res = '0'
     return res
 
-  def getDeclare(self):
-    return 'private '+self.type+' '+self.name+' = '+self.getInitValueByJavaType(self.type)+';'
+  def getDeclare(self, initialize_global_variables):
+    return 'private '+self.type+' '+self.name+(' = '+self.getInitValueByJavaType(self.type) if initialize_global_variables == True else '')+';'

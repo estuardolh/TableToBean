@@ -39,8 +39,8 @@ python TableToBean.py input.csv
 Output:
 ```
 public class Cat {
-  private String id_cat = "";
-  private long age = 0;
+  private String id_cat;
+  private long age;
 
   public Cat(String id_cat, long age){
     this.id_cat = id_cat;

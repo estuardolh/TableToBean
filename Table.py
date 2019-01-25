@@ -12,11 +12,11 @@ class Table:
   def setFields(self, field_list):
     fields = field_list
 
-  def getGlobalVars(self):
+  def getGlobalVars(self, initialize_global_variables):
     res = ''
     first_declare = True
     for field in self.field_list:
-      res += ('  ' if first_declare == True else '\n  ')+field.getDeclare()
+      res += ('  ' if first_declare == True else '\n  ')+field.getDeclare(initialize_global_variables)
       first_declare = False
     return res
 
@@ -47,5 +47,8 @@ class Table:
       first_method = False
     return res
 
-  def toClass(self):
-    return "public class "+self.name+" {\n"+self.getGlobalVars()+'\n\n'+self.getInitializerConstructor()+'\n\n'+self.getFieldsToMethods()+"\n}\n"
+  def toClass(self, initialize_global_variables):
+    return "public class "+self.name+" {\n"+self.getGlobalVars(initialize_global_variables)+'\n\n'+self.getInitializerConstructor()+'\n\n'+self.getFieldsToMethods()+"\n}\n"
+
+  def getTableName(self):
+    return self.name
