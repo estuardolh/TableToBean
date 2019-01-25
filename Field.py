@@ -1,3 +1,5 @@
+from FieldFormat import FieldFormat
+
 class Field:
   TYPE_JAVA_STRING = 'String'
   TYPE_JAVA_LONG = 'long'
@@ -10,10 +12,10 @@ class Field:
     self.type = type
 
   def getGetter(self):
-    return 'public '+self.type+' get'+self.name+'(){\n    return this.'+self.name+';\n  }'
+    return 'public '+self.type+' get'+FieldFormat.getCamelCase(self.name, True)+'(){\n    return this.'+self.name+';\n  }'
 
   def getSetter(self):
-    return 'public void set'+self.name+'('+self.type+' '+self.name+'){\n    this.'+self.name+' = '+self.name+';\n  }'
+    return 'public void set'+FieldFormat.getCamelCase(self.name, True)+'('+self.type+' '+self.name+'){\n    this.'+self.name+' = '+self.name+';\n  }'
 
   def getInitValueByJavaType(self, type):
     res = ''

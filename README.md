@@ -7,6 +7,8 @@ Reads CSV file export from Oracle all_tab_columns table to generate Java Beans.
 python TableToBean.py <CSV input file>
 ```
 
+```config.ini``` contains configuration variables.
+
 CSV input file content could be generated as follow:
 
 ```
@@ -29,46 +31,50 @@ CSV input file:
 'CAT','ID_AGE','NUMBER'
 ```
 
-Generated content:
+Execution:
+```
+python TableToBean.py input.csv
+```
+
+Output:
 ```
 public class Cat {
-  private String IdCat = "";
-  private long AgeCat = 0;
+  private String id_cat = "";
+  private long age = 0;
 
-  public Cat(String IdCat, long AgeCat){
-    this.IdCat = IdCat;
-    this.AgeCat = AgeCat;
+  public Cat(String id_cat, long age){
+    this.id_cat = id_cat;
+    this.age = age;
   }
 
   public String getIdCat(){
-    return this.IdCat;
+    return this.id_cat;
   }
 
-  public void setIdCat(String IdCat){
-    this.IdCat = IdCat;
+  public void setIdCat(String id_cat){
+    this.id_cat = id_cat;
   }
 
-  public long getAgeCat(){
-    return this.AgeCat;
+  public long getAge(){
+    return this.age;
   }
 
-  public void setAgeCat(long AgeCat){
-    this.AgeCat = AgeCat;
+  public void setAge(long age){
+    this.age = age;
   }
 }
 ```
 
 ### Requirements for Ubuntu
 
-From pip:
+On terminal execute:
+```
+  pip install cx_Oracle
+  pip install configparser
   
-  - cx_Oracle
+  sudo apt-get install libaio1
+  sudo apt-get install libaio-dev
+```
 
-From apt:
-  
-  - libaio1
-  - libaio-dev
-  
-From Oracle:
-  
-  - https://oracle.github.io/odpi/doc/installation.html#linux
+And then follow [this instructions](https://oracle.github.io/odpi/doc/installation.html#linux) from Oracle docs.
+
