@@ -1,5 +1,5 @@
 # TableToBean
-Connects to an Oracle database and generate Java Beans.
+Reads CSV file export from Oracle all_tab_columns table to generate Java Beans.
 
 **USAGE**:
 
@@ -23,10 +23,39 @@ Notes:
 
 ### Example
 
-CSV input file
+CSV input file:
 ```
 'CAT','ID_CAT','VARCHAR2'
-'CAT','AGE','NUMBER'
+'CAT','ID_AGE','NUMBER'
+```
+
+Generated content:
+```
+public class Cat {
+  private String IdCat = "";
+  private long AgeCat = 0;
+
+  public Cat(String IdCat, long AgeCat){
+    this.IdCat = IdCat;
+    this.AgeCat = AgeCat;
+  }
+
+  public String getIdCat(){
+    return this.IdCat;
+  }
+
+  public void setIdCat(String IdCat){
+    this.IdCat = IdCat;
+  }
+
+  public long getAgeCat(){
+    return this.AgeCat;
+  }
+
+  public void setAgeCat(long AgeCat){
+    this.AgeCat = AgeCat;
+  }
+}
 ```
 
 ### Requirements for Ubuntu
