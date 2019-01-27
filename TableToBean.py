@@ -1,3 +1,4 @@
+import os
 import sys
 import configparser
 
@@ -13,6 +14,10 @@ database_types = configuration[database_type_dictionary]
 
 parent_class = configuration['main']['parent_class']
 identation_string = configuration['main']['identation']
+
+def createDirectoryIfNotExist(directory_name):
+  if not os.path.exists(directory_name):
+    os.mkdir(directory_name)
 
 def removeSingleQuoteMark(text):
   return text.replace("'","")
@@ -81,6 +86,8 @@ print "Java files to generate: "+str(len(table_list))
 initialize_global_variables = configuration['main']['global_variables_inicialization']
 
 identation = removeSingleQuoteMark(identation_string)
+
+createDirectoryIfNotExist('./output/')
 
 for table in table_list:
   generated_file_path = "./output/"+table.getTableName()+".java"
