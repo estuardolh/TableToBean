@@ -8,6 +8,12 @@ python TableToBean.py <CSV input file>
 ```
 
 ```config.ini``` contains configuration variables.
+  - [boolean] global_variables_camelcase: global variables camelcase
+  - [boolean] global_variables_inicialization: global variable inicialization
+  - [string] parent_class:parent class
+  - [string] database_type_dictionary: python section name switch gets java variable types for each database data type
+  - [python section]
+    - <Database data type> = <Java Variable type>
 
 CSV input file content could be generated as follow:
 
@@ -78,3 +84,6 @@ On terminal execute:
 
 And then follow [this instructions](https://oracle.github.io/odpi/doc/installation.html#linux) from Oracle docs.
 
+
+
+Contributions are welcome.

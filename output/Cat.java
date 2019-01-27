@@ -1,4 +1,4 @@
-public class Cat {
+public class Cat extends Tabla {
   private String id_cat;
   private String age;
 

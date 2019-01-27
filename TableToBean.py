@@ -11,6 +11,8 @@ configuration.read('config.ini')
 database_type_dictionary = configuration['main']['database_type_dictionary']
 database_types = configuration[database_type_dictionary]
 
+parent_class = configuration['main']['parent_class']
+
 def removeSingleQuoteMark(text):
   return text.replace("'","")
 
@@ -58,12 +60,14 @@ for line in input_file:
     
     if(first_class):
       a_table = Table(table_name)
+      a_table.setParentClass(parent_class)
       first_class = False
       current_table_name = table_name
     
     if(current_table_name != table_name):
       table_list.append(a_table)
       a_table = Table(table_name)
+      a_table.setParentClass(parent_class)
       
       current_table_name = table_name
     

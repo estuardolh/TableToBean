@@ -1,6 +1,7 @@
 class Table:
   field_list=[]
   name=''
+  parent_class=''
 
   def __init__(self, name):
     self.name = name
@@ -48,7 +49,10 @@ class Table:
     return res
 
   def toClass(self, initialize_global_variables):
-    return "public class "+self.name+" {\n"+self.getGlobalVars(initialize_global_variables)+'\n\n'+self.getInitializerConstructor()+'\n\n'+self.getFieldsToMethods()+"\n}\n"
+    return "public class "+self.name+(" extends "+self.parent_class if len(self.parent_class) > 0 else "")+" {\n"+self.getGlobalVars(initialize_global_variables)+'\n\n'+self.getInitializerConstructor()+'\n\n'+self.getFieldsToMethods()+"\n}\n"
 
   def getTableName(self):
     return self.name
+
+  def setParentClass(self, parent_class):
+    self.parent_class = parent_class
