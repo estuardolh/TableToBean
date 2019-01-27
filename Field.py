@@ -11,11 +11,11 @@ class Field:
     self.name = name
     self.type = type
 
-  def getGetter(self):
-    return 'public '+self.type+' get'+FieldFormat.getCamelCase(self.name, True)+'(){\n    return this.'+self.name+';\n  }'
+  def getGetter(self, identation):
+    return 'public '+self.type+' get'+FieldFormat.getCamelCase(self.name, True)+'(){\n'+identation+identation+'return this.'+self.name+';\n'+identation+'}'
 
-  def getSetter(self):
-    return 'public void set'+FieldFormat.getCamelCase(self.name, True)+'('+self.type+' '+self.name+'){\n    this.'+self.name+' = '+self.name+';\n  }'
+  def getSetter(self, identation):
+    return 'public void set'+FieldFormat.getCamelCase(self.name, True)+'('+self.type+' '+self.name+'){\n'+identation+identation+'this.'+self.name+' = '+self.name+';\n'+identation+'}'
 
   def getInitValueByJavaType(self, type):
     res = ''

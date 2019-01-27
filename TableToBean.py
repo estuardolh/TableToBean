@@ -12,6 +12,7 @@ database_type_dictionary = configuration['main']['database_type_dictionary']
 database_types = configuration[database_type_dictionary]
 
 parent_class = configuration['main']['parent_class']
+identation_string = configuration['main']['identation']
 
 def removeSingleQuoteMark(text):
   return text.replace("'","")
@@ -75,15 +76,15 @@ for line in input_file:
   line_count += 1
 table_list.append(a_table)
 
-print "Tables collected: "+str(len(table_list))
+print "Java files to generate: "+str(len(table_list))
 
 initialize_global_variables = configuration['main']['global_variables_inicialization']
 
-print initialize_global_variables
+identation = removeSingleQuoteMark(identation_string)
 
 for table in table_list:
   generated_file_path = "./output/"+table.getTableName()+".java"
   file = open(generated_file_path, "w+")
-  file.write(table.toClass(True if initialize_global_variables == 'True' else False))
+  file.write(table.toClass(True if initialize_global_variables == 'True' else False, identation))
   file.close()
-  print "  - file "+generated_file_path
+  print "  - file "+generated_file_path+' generated.'

@@ -7,11 +7,12 @@ Reads CSV file export from Oracle all_tab_columns table to generate Java Beans.
 python TableToBean.py <CSV input file>
 ```
 
-```config.ini``` contains configuration variables.
+```config.ini``` contains configuration variables:
   - [boolean] global_variables_camelcase: global variables camelcase
   - [boolean] global_variables_inicialization: global variable inicialization
   - [string] parent_class:parent class
   - [string] database_type_dictionary: python section name switch gets java variable types for each database data type
+  - [string] identation: identation quoted by single quote mark
   - [python section]
     - <Database data type> = <Java Variable type>
 
@@ -29,7 +30,7 @@ Notes:
   - It hasn't column's header.
   - Values must be quoted by single quote mark.
 
-### Example
+### Example:
 
 CSV input file:
 ```
@@ -71,7 +72,7 @@ public class Cat {
 }
 ```
 
-### Requirements for Ubuntu
+### Requirements for Ubuntu:
 
 On terminal execute:
 ```
