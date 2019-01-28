@@ -1,2 +1,3 @@
-'CAT','ID_CAT','VARCHAR2'
-'CAT','AGE','NUMBER'
+'CAT','ID_CAT','VARCHAR2','7','Cat identification'
+'CAT','AGE','NUMBER','2','how old is cat?'
+'CAT','SIZE','CHAR','2','S, M, XL'

@@ -42,14 +42,24 @@ class Table:
     res = ''
     first_method = True
     for field in self.field_list:
-      res += (identation if first_method == True else '\n\n'+identation)+field.getGetter(identation)
-      res += '\n\n'+identation+field.getSetter(identation)
+      res += (identation if first_method == True else '\n\n'+identation)
+      res += field.getJavaComment(identation)
+      res += identation+field.getGetter(identation)
+ 
+      res += '\n\n'+identation
+      res += field.getJavaComment(identation)
+      res += identation+field.getSetter(identation)
 
       first_method = False
     return res
 
   def toClass(self, initialize_global_variables, identation):
-    return "public class "+self.name+(" extends "+self.parent_class if len(self.parent_class) > 0 else "")+" {\n"+self.getGlobalVars(initialize_global_variables, identation)+'\n\n'+self.getInitializerConstructor(identation)+'\n\n'+self.getFieldsToMethods(identation)+"\n}\n"
+    a_class = "public class "+self.name+(" extends "+self.parent_class if len(self.parent_class) > 0 else "")
+    a_class += " {\n"+self.getGlobalVars(initialize_global_variables, identation)
+    a_class += '\n\n'+self.getInitializerConstructor(identation)
+    a_class += '\n\n'+self.getFieldsToMethods(identation)+"\n}\n"
+
+    return a_class
 
   def getTableName(self):
     return self.name

@@ -19,9 +19,9 @@ python TableToBean.py <CSV input file>
 CSV input file content could be generated as follow:
 
 ```
-select ''''||table_name||''','''||column_name||''','''||data_type||''''
-from all_tab_columns
-order by table_name, column_id;
+SELECT ''''||table_name||''','''||column_name||''','''||data_type||''','''||data_length||''','''||comments||''''
+FROM all_tab_columns NATURAL JOIN all_col_comments
+ORDER BY table_name, column_id;
 ```
 
 Notes:

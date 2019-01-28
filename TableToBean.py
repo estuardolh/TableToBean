@@ -7,7 +7,7 @@ from Field import Field
 from FieldFormat import FieldFormat
 
 configuration = configparser.ConfigParser()
-configuration.read('config.ini')
+configuration.read('configuration.ini')
 
 database_type_dictionary = configuration['main']['database_type_dictionary']
 database_types = configuration[database_type_dictionary]
@@ -30,6 +30,8 @@ INPUT_NUMBER_OF_COLUMNS = 3
 COLUMN_INDEX_TABLE_NAME = 0
 COLUMN_INDEX_FIELD_NAME = 1
 COLUMN_INDEX_FIELD_TYPE = 2
+COLUMN_INDEX_FIELD_SIZE = 3
+COLUMN_INDEX_FIELD_COMMENT = 4
 
 if(len(sys.argv) == 1):
   print "no input file path specified."
@@ -63,7 +65,9 @@ for line in input_file:
       field_name = field_name_lowercase
 
     field_type = getJavaTypeByOracleFieldType(removeSingleQuoteMark(csv_columns[COLUMN_INDEX_FIELD_TYPE]))
-    
+    field_size = removeSingleQuoteMark(csv_columns[COLUMN_INDEX_FIELD_SIZE])
+    field_comment = removeSingleQuoteMark(csv_columns[COLUMN_INDEX_FIELD_COMMENT])
+
     if(first_class):
       a_table = Table(table_name)
       a_table.setParentClass(parent_class)
@@ -77,7 +81,7 @@ for line in input_file:
       
       current_table_name = table_name
     
-    a_table.addField(Field(field_name, field_type))
+    a_table.addField(Field(field_name, field_type, field_size, field_comment))
   line_count += 1
 table_list.append(a_table)
 

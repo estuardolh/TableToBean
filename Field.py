@@ -6,10 +6,20 @@ class Field:
 
   name=''
   type=''
+  size=0
+  comment=''
 
-  def __init__(self, name, type):
+  def __init__(self, name, type, size, comment):
     self.name = name
     self.type = type
+    self.size = size
+    self.comment = comment
+
+  def getJavaComment(self, identation):
+    a_comment = '/**\n'
+    a_comment += identation+' * '+self.comment+'\n'
+    a_comment += identation+' */\n'
+    return a_comment
 
   def getGetter(self, identation):
     return 'public '+self.type+' get'+FieldFormat.getCamelCase(self.name, True)+'(){\n'+identation+identation+'return this.'+self.name+';\n'+identation+'}'
