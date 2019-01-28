@@ -14,7 +14,7 @@ python TableToBean.py <CSV input file>
   - [string] database_type_dictionary: python section name switch gets java variable types for each database data type
   - [string] identation: identation quoted by single quote mark
   - [python section]
-    - <Database data type> = <Java Variable type>
+    - [string] Database data type = [string] Java Variable type
 
 CSV input file content could be generated as follow:
 
@@ -34,8 +34,9 @@ Notes:
 
 CSV input file:
 ```
-'CAT','ID_CAT','VARCHAR2'
-'CAT','ID_AGE','NUMBER'
+'CAT','ID_CAT','VARCHAR2','7','Cat identification'
+'CAT','AGE','NUMBER','2','how old is cat?'
+'CAT','SIZE','CHAR','2','S/M/XL'
 ```
 
 Execution:
@@ -46,29 +47,57 @@ python TableToBean.py input.csv
 Output:
 ```
 public class Cat {
-  private String id_cat;
-  private long age;
+	private String id_cat;
+	private String age;
+	private String size;
 
-  public Cat(String id_cat, long age){
-    this.id_cat = id_cat;
-    this.age = age;
-  }
+	public Cat(String id_cat, String age, String size){
+		this.id_cat = id_cat;
+		this.age = age;
+		this.size = size;
+	}
 
-  public String getIdCat(){
-    return this.id_cat;
-  }
+	/**
+	 * Cat identification
+	 */
+	public String getIdCat(){
+		return this.id_cat;
+	}
 
-  public void setIdCat(String id_cat){
-    this.id_cat = id_cat;
-  }
+	/**
+	 * Cat identification
+	 */
+	public void setIdCat(String id_cat){
+		this.id_cat = id_cat;
+	}
 
-  public long getAge(){
-    return this.age;
-  }
+	/**
+	 * how old is cat?
+	 */
+	public String getAge(){
+		return this.age;
+	}
 
-  public void setAge(long age){
-    this.age = age;
-  }
+	/**
+	 * how old is cat?
+	 */
+	public void setAge(String age){
+		this.age = age;
+	}
+
+	/**
+	 * S/M/XL
+	 */
+	public String getSize(){
+		return this.size;
+	}
+
+	/**
+	 * S/M/XL
+	 */
+	public void setSize(String size){
+		this.size = size;
+	}
 }
 ```
 
