@@ -21,7 +21,13 @@ class Table:
       first_declare = False
     return res
 
-  def getInitializerConstructor(self, identation):
+  def getEmptyConstructor(self, identation):
+    res = ''
+    res += identation + 'public '+self.name+'(){\n'
+    res += identation + '}'
+    return res
+
+  def getConstructorInitializer(self, identation):
     res = ''
     res += identation+'public '+self.name+'('
     field_count = 1
@@ -38,26 +44,27 @@ class Table:
     res += '\n'+identation+'}'
     return res
 
-  def getFieldsToMethods(self, identation):
+  def getFieldsToMethods(self, identation, show_getter_comment, show_setter_comment):
     res = ''
     first_method = True
     for field in self.field_list:
-      res += (identation if first_method == True else '\n\n'+identation)
-      res += field.getJavaComment(identation)
-      res += identation+field.getGetter(identation)
- 
-      res += '\n\n'+identation
-      res += field.getJavaComment(identation)
-      res += identation+field.getSetter(identation)
+      res += ('' if first_method == True else '\n\n')
+      res += identation + field.getJavaComment(identation) if show_getter_comment else ''
+      res += identation + field.getGetter(identation)
+
+      res += '\n\n'
+      res += identation + field.getJavaComment(identation) if show_setter_comment else ''
+      res += identation + field.getSetter(identation)
 
       first_method = False
     return res
 
-  def toClass(self, initialize_global_variables, identation):
+  def toClass(self, initialize_global_variables, identation, show_getter_comment, show_setter_comment, generate_empty_constructor, generate_constructor_initializer):
     a_class = "public class "+self.name+(" extends "+self.parent_class if len(self.parent_class) > 0 else "")
     a_class += " {\n"+self.getGlobalVars(initialize_global_variables, identation)
-    a_class += '\n\n'+self.getInitializerConstructor(identation)
-    a_class += '\n\n'+self.getFieldsToMethods(identation)+"\n}\n"
+    a_class += '\n\n'+self.getEmptyConstructor(identation) if generate_empty_constructor else ''
+    a_class += '\n\n'+self.getConstructorInitializer(identation) if generate_constructor_initializer else ''
+    a_class += '\n\n'+self.getFieldsToMethods(identation, show_getter_comment, show_setter_comment)+"\n}\n"
 
     return a_class
 

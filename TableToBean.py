@@ -59,7 +59,7 @@ for line in input_file:
     field_name_camel_case = FieldFormat.getCamelCase(field_name)
     field_name_lowercase = field_name.lower()
 
-    if(configuration['main']['global_variables_camelcase']=='True'):
+    if(True if configuration['main']['global_variables_camelcase'] == 'True' else False):
       field_name = field_name_camel_case
     else:
       field_name = field_name_lowercase
@@ -87,8 +87,11 @@ table_list.append(a_table)
 
 print "Java files to generate: "+str(len(table_list))
 
-initialize_global_variables = configuration['main']['global_variables_inicialization']
-
+initialize_global_variables = True if configuration['main']['global_variables_inicialization'] == 'True' else False
+show_getter_comment = True if configuration['main']['show_getter_comment'] == 'True' else False
+show_setter_comment = True if configuration['main']['show_setter_comment'] == 'True' else False
+generate_empty_constructor = True if configuration['main']['generate_empty_constructor'] == 'True' else False
+generate_constructor_initializer = True if configuration['main']['generate_constructor_initializer'] == 'True' else False
 identation = removeSingleQuoteMark(identation_string)
 
 createDirectoryIfNotExist('./output/')
@@ -96,6 +99,6 @@ createDirectoryIfNotExist('./output/')
 for table in table_list:
   generated_file_path = "./output/"+table.getTableName()+".java"
   file = open(generated_file_path, "w+")
-  file.write(table.toClass(True if initialize_global_variables == 'True' else False, identation))
+  file.write(table.toClass(initialize_global_variables, identation, show_getter_comment, show_setter_comment, generate_empty_constructor, generate_constructor_initializer))
   file.close()
   print "  - file "+generated_file_path+' generated.'

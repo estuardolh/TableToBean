@@ -7,14 +7,17 @@ Reads CSV file export from Oracle all_tab_columns table to generate Java Beans.
 python TableToBean.py <CSV input file>
 ```
 
-```config.ini``` contains configuration variables:
-  - [boolean] global_variables_camelcase: global variables camelcase
-  - [boolean] global_variables_inicialization: global variable inicialization
-  - [string] parent_class:parent class
-  - [string] database_type_dictionary: python section name switch gets java variable types for each database data type
-  - [string] identation: identation quoted by single quote mark
-  - [python section]
-    - [string] Database data type = [string] Java Variable type
+For configuration variables see ```config.ini``` file.
+
+### Configurable
+- Global variables format(lowercase | camelcase)
+- Global variables inicialization
+- Set parent class (extends)
+- Identation
+- Java type per Oracle Data type
+- Generate comments for getter/setter
+- Generate empty constructor(no parameters)
+- Generate constructor initializer
 
 CSV input file content could be generated as follow:
 

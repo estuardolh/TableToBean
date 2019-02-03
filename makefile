@@ -1,5 +1,5 @@
 cat: input.csv
-	rm ./output/Cat.java
+	rm -f ./output/Cat.java
 	python TableToBean.py input.csv
-sight-cat: ./output/Cat.java
+checkout-cat: ./output/Cat.java
 	cat ./output/Cat.java
