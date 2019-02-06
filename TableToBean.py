@@ -48,6 +48,11 @@ table_list = []
 a_table = Table('')
 
 for line in input_file:
+  if isinstance(line, str):
+    line = line.decode('ascii', 'ignore').encode('ascii')
+  elif isinstance(line, unicode):
+    line = line.encode('ascii', 'ignore')
+
   if( len(line.strip()) < INPUT_NUMBER_OF_COLUMNS ):
     print "each line should have 3 columns. line "+str(line_count)+" skipped."
   else:

@@ -21,8 +21,11 @@ class Field:
     a_comment += identation+' */\n'
     return a_comment
 
+  def getGetterMethodName(self):
+    return 'get'+FieldFormat.getCamelCase(self.name, True)
+
   def getGetter(self, identation):
-    return 'public '+self.type+' get'+FieldFormat.getCamelCase(self.name, True)+'(){\n'+identation+identation+'return this.'+self.name+';\n'+identation+'}'
+    return 'public '+self.type+' '+self.getGetterMethodName()+'(){\n'+identation+identation+'return this.'+self.name+';\n'+identation+'}'
 
   def getSetter(self, identation):
     return 'public void set'+FieldFormat.getCamelCase(self.name, True)+'('+self.type+' '+self.name+'){\n'+identation+identation+'this.'+self.name+' = '+self.name+';\n'+identation+'}'
@@ -37,3 +40,4 @@ class Field:
 
   def getDeclare(self, initialize_global_variables):
     return 'private '+self.type+' '+self.name+(' = '+self.getInitValueByJavaType(self.type) if initialize_global_variables == True else '')+';'
+

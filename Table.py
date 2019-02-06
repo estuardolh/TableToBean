@@ -59,12 +59,35 @@ class Table:
       first_method = False
     return res
 
+  def getJsonMethod(self, identation):
+    answer = identation+'public String toJson(String identation){\n'
+    answer += identation+identation+'String json = "{\\n";\n'
+
+    for index, field in enumerate(self.field_list):
+      answer += identation+identation+'json += identation+'+'"'
+
+      answer += '  \\"' + field.name + '\\":"+(this.' + field.getGetterMethodName()
+      answer += '()==null?"null":"\\"\"+this.' + field.getGetterMethodName() + '()+"\\"")+"'
+
+      answer += "," if index < len(self.field_list)-1 else ''
+      answer += '\\n";\n'
+
+    answer += identation+identation+'json += identation+"}";\n'
+    answer += identation+identation+'\n'
+    answer += identation+identation+'return json;\n'
+    answer += identation+'}'
+
+    return answer
+
   def toClass(self, initialize_global_variables, identation, show_getter_comment, show_setter_comment, generate_empty_constructor, generate_constructor_initializer):
     a_class = "public class "+self.name+(" extends "+self.parent_class if len(self.parent_class) > 0 else "")
     a_class += " {\n"+self.getGlobalVars(initialize_global_variables, identation)
     a_class += '\n\n'+self.getEmptyConstructor(identation) if generate_empty_constructor else ''
     a_class += '\n\n'+self.getConstructorInitializer(identation) if generate_constructor_initializer else ''
-    a_class += '\n\n'+self.getFieldsToMethods(identation, show_getter_comment, show_setter_comment)+"\n}\n"
+    a_class += '\n\n'+self.getFieldsToMethods(identation, show_getter_comment, show_setter_comment)
+    a_class += '\n\n'+self.getJsonMethod(identation)
+    a_class += "\n}\n"
+    a_class += '\n'
 
     return a_class
 
