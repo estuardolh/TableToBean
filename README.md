@@ -18,6 +18,8 @@ For configuration variables see ```config.ini``` file.
 - Generate comments for getter/setter
 - Generate empty constructor(no parameters)
 - Generate constructor initializer
+- Generate toJson() method
+- Reads Unicode encoding input CSV file
 
 CSV input file content could be generated as follow:
 
